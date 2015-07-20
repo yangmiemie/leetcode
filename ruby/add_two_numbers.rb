@@ -38,40 +38,33 @@ end
 def add_two_numbers(l1, l2)
 	return l1 if l2.nil?
 	return l2 if l1.nil?
-	
+
 	result = add_two_node(0, l1, l2)
 	value, carry, l1, l2 = result[0], result[1], result[2], result[3]
 	head = ListNode.new(value)
-	l = head
+	list = head
 
 	while !l1.nil? && !l2.nil?
 		result = add_two_node(carry, l1, l2)
 		value, carry, l1, l2 = result[0], result[1], result[2], result[3]
 		node = ListNode.new(value)
-		l.next = node
-		l = node
+		list.next = node
+		list = node
 	end
 
-	while !l1.nil?
-		result = add_two_node(carry, l1)
-		value, carry, l1 = result[0], result[1], result[2]
+	l = l1.nil? ? l2 : l1
+	while !l.nil?
+		result = add_two_node(carry, l)
+		value, carry, l = result[0], result[1], result[2]
 		node = ListNode.new(value)
-		l.next = node
-		l = node
-	end
-
-	while !l2.nil?
-		result = add_two_node(carry, l2)
-		value, carry, l2 = result[0], result[1], result[2]
-		node = ListNode.new(value)
-		l.next = node
-		l = node
+		list.next = node
+		list = node
 	end
 
  	if (carry > 0)
  		node = ListNode.new(carry)
- 		l.next = node
- 		l = node
+ 		list.next = node
+ 		list = node
  	end
 
 	head
