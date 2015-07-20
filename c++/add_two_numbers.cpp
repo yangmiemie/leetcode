@@ -33,6 +33,7 @@ class Solution {
 
         head = NULL;
         list = &head;
+        carry = 0;
         while (l1 != NULL || l2 != NULL)
         {
         	val1 = getValueAndMoveNext(l1);

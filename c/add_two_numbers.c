@@ -70,19 +70,23 @@ void freeList(struct ListNode *list)
 	}
 }
 
-void addTwoNode(struct ListNode *l1, struct ListNode* l2, int carry, int* resCarry, int*resVal)
+int getValueAndMoveNext(struct ListNode** l1)
 {
-	int val2, sum;
+	int value;
 
-	val2 = l2 == NULL ? 0 : l2 -> val;
-	sum = carry + l1 -> val + val2;
-	*resCarry = sum >= 10 ? 1 : 0;
-	*resVal = *resCarry > 0 ? sum - 10 : sum;
+	value = 0;
+	if (*l1)
+	{
+		value = (*l1) -> val;
+		*l1 = (*l1) -> next;
+	}
+
+	return value;
 }
 
 struct ListNode* addTwoNumbers(struct ListNode* l1, struct ListNode* l2) {
-  struct ListNode *head, *list, *node, *l;
-  int value, carry;
+  struct ListNode *head, **list;
+  int value, carry, sum, val1, val2;
 
   if (l1 == NULL)
   	return l2;
@@ -90,36 +94,23 @@ struct ListNode* addTwoNumbers(struct ListNode* l1, struct ListNode* l2) {
   if (l2 == NULL)
   	return l1;
 
-  addTwoNode(l1, l2, 0, &carry, &value);
-  head = NewNode(value);
-  list = head;
-  l1 = l1 -> next;
-  l2 = l2 -> next;
-
-  while (l1 != NULL && l2 != NULL)
+  carry = 0;
+  head = NULL;
+  list = &head;
+  while (l1 != NULL || l2 != NULL)
   {
-  	addTwoNode(l1, l2, carry, &carry, &value);
-  	node = NewNode(value);
-  	list -> next = node;
-  	list = list -> next;
-  	l1 = l1 -> next;
-  	l2 = l2 -> next;
-  }
-
-  l = l1 == NULL ? l2 : l1;
-  while(l != NULL)
-  {
-  	addTwoNode(l, NULL, carry, &carry, &value);
-  	node = NewNode(value);
-  	list -> next = node;
-  	list = list -> next;
-  	l = l -> next;
+  	val1 = getValueAndMoveNext(&l1);
+  	val2 = getValueAndMoveNext(&l2);
+  	sum = carry + val1 + val2;
+  	carry = sum >= 10 ? 1 : 0;
+  	value = sum >= 10 ? sum - 10 : sum;
+  	*list = NewNode(value);
+  	list = &((*list) -> next);
   }
 
   if (carry > 0)
   {
-  	node = NewNode(carry);
-  	list -> next = node;
+  	*list = NewNode(carry);
   }
 
   return head;  
