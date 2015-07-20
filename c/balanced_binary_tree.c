@@ -47,21 +47,35 @@ int Height(Tree T)
 	return Max(LeftHeight, RightHeight) + 1;
 }
 
-int isBalanced(struct TreeNode* root) {
-	if (root == NULL)
-		return 1;
-
+int isTreeBalanced(Tree T, int* Height)
+{
 	int LeftHeight, RightHeight;
-	int rootBalanced, leftBalanced, rightBalanced;
+	int LeftBalanced, RightBalanced, rootBalanced;
 
-	LeftHeight = Height(root -> left);
-	RightHeight = Height(root -> right);
+	if (T == NULL)
+	{
+		*Height = 0;
+		return 1;
+	}
 
+	if (T -> left == NULL && T -> right == NULL)
+	{
+		*Height = 1;
+		return 1;
+	}
+
+	LeftBalanced = isTreeBalanced(T -> left, &LeftHeight);
+	RightBalanced = isTreeBalanced(T -> right, &RightHeight);
+
+	*Height = Max(LeftHeight, RightHeight) + 1;
 	rootBalanced = Abs(LeftHeight - RightHeight) > 1 ? 0 : 1;
-	leftBalanced = isBalanced(root -> left);
-	rightBalanced = isBalanced(root -> right);
 
-	return rootBalanced && leftBalanced && rightBalanced;
+	return rootBalanced && LeftBalanced && RightBalanced;
+}
+
+int isBalanced(struct TreeNode* root) {
+	int Height;
+	return isTreeBalanced(root, &Height);
 }
 
 Tree NewNode(int value)
@@ -119,7 +133,7 @@ void PreOrderTraverse(Tree T)
 
 int main(int argc, char const *argv[])
 {
-	int array[] = {7, 3, 8};
+	int array[] = {7, 3};
 	Tree T;
 	int i, Len, balanced;
 
