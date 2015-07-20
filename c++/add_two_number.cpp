@@ -16,6 +16,7 @@ using std::endl;
 struct ListNode {
 	int val;
 	ListNode *next;
+	ListNode(int x): val(x), next(NULL) {}
 };
 
 class Solution {
@@ -31,7 +32,7 @@ class Solution {
         	return l1;
 
         addTwoNode(l1, l2, 0, &carry, &value);
-        head = NewNode(value);
+        head = new ListNode(value);
         list = head;
         l1 = l1 -> next;
         l2 = l2 -> next;
@@ -39,7 +40,7 @@ class Solution {
         while (l1 != NULL && l2 != NULL)
         {
         	addTwoNode(l1, l2, carry, &carry, &value);
-        	node = NewNode(value);
+        	node = new ListNode(value);
         	list -> next = node;
         	list = list -> next;
         	l1 = l1 -> next;
@@ -50,7 +51,7 @@ class Solution {
         while(l != NULL)
         {
         	addTwoNode(l, NULL, carry, &carry, &value);
-        	node = NewNode(value);
+        	node = new ListNode(value);
         	list -> next = node;
         	list = list -> next;
         	l = l -> next;
@@ -58,7 +59,7 @@ class Solution {
 
         if (carry > 0)
         {
-        	node = NewNode(carry);
+        	node = new ListNode(carry);
         	list -> next = node;
         }
 
@@ -71,12 +72,12 @@ class Solution {
 				return NULL;
 
 			ListNode* head, *list, *node;
-			head = NewNode(array[0]);
+			head = new ListNode(array[0]);
 			list = head;
 
 			for (int i = 1; i < size; ++i)
 			{
-				node = NewNode(array[i]);
+				node = new ListNode(array[i]);
 				list -> next = node;
 				list = list -> next;
 			}
@@ -107,14 +108,6 @@ class Solution {
 		}
 
   private:
-  	ListNode* NewNode(int value)
-  	{
-  		ListNode* node;
-  		node = new ListNode;
-  		node -> val = value;
-  		node -> next = NULL;
-  		return node;
-  	}
 
   	void addTwoNode(ListNode *l1, ListNode* l2, int carry, int* resCarry, int*resVal)
   	{
