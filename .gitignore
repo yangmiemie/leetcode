@@ -1,5 +1,5 @@
 *
-!c/*.c
-!c++/*.cpp
-!ruby/*.rb
-!javascript/*.js
+!/c/*.c
+!/c++/*.cpp
+!/ruby/*.rb
+!/javascript/*.js
