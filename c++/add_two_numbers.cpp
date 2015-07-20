@@ -22,8 +22,8 @@ struct ListNode {
 class Solution {
 	public:
     ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) {
-        ListNode *head, *list, *node, *l;
-        int value, carry;
+        ListNode *head, **list, *node, *l;
+        int sum, value, carry, val1, val2;
 
         if (l1 == NULL)
         	return l2;
@@ -31,36 +31,26 @@ class Solution {
         if (l2 == NULL)
         	return l1;
 
-        addTwoNode(l1, l2, 0, &carry, &value);
-        head = new ListNode(value);
-        list = head;
-        l1 = l1 -> next;
-        l2 = l2 -> next;
-
-        while (l1 != NULL && l2 != NULL)
+        head = NULL;
+        list = &head;
+        while (l1 != NULL || l2 != NULL)
         {
-        	addTwoNode(l1, l2, carry, &carry, &value);
-        	node = new ListNode(value);
-        	list -> next = node;
-        	list = list -> next;
-        	l1 = l1 -> next;
-        	l2 = l2 -> next;
-        }
+        	val1 = getValueAndMoveNext(l1);
+        	val2 = getValueAndMoveNext(l2);
 
-        l = l1 == NULL ? l2 : l1;
-        while(l != NULL)
-        {
-        	addTwoNode(l, NULL, carry, &carry, &value);
+        	sum = val1 + val2 + carry;
+        	value = sum >= 10 ? sum - 10 : sum;
+        	carry = sum >= 10 ? 1 : 0;
+
         	node = new ListNode(value);
-        	list -> next = node;
-        	list = list -> next;
-        	l = l -> next;
-        }
+        	*list = node;
+        	list = &(node -> next);
+         }
 
         if (carry > 0)
         {
         	node = new ListNode(carry);
-        	list -> next = node;
+        	*list = node;
         }
 
         return head;
@@ -108,15 +98,17 @@ class Solution {
 		}
 
   private:
-
-  	void addTwoNode(ListNode *l1, ListNode* l2, int carry, int* resCarry, int*resVal)
+  	int getValueAndMoveNext(ListNode* &list)
   	{
-  		int val2, sum;
+  		int value = 0;
 
-  		val2 = l2 == NULL ? 0 : l2 -> val;
-  		sum = carry + l1 -> val + val2;
-  		*resCarry = sum >= 10 ? 1 : 0;
-  		*resVal = *resCarry > 0 ? sum - 10 : sum;
+  		if (list)
+  		{
+  			value = list -> val;
+  			list = list -> next;
+  		}
+
+  		return value;
   	}
 };
 
