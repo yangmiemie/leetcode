@@ -26,124 +26,124 @@
 
 struct Stack
 {
-	int Size;
-	int Capacity;
-	ElementType* Next;
+  int Size;
+  int Capacity;
+  ElementType* Next;
 };
 
 typedef struct Stack* Stack;
 
 Stack Initialize()
 {
-	Stack S;
+  Stack S;
 
-	S = malloc(sizeof(struct Stack));
-	S -> Next = malloc(sizeof(ElementType) * SIZE);
-	S -> Size = 0;
-	S -> Capacity = SIZE;
+  S = malloc(sizeof(struct Stack));
+  S -> Next = malloc(sizeof(ElementType) * SIZE);
+  S -> Size = 0;
+  S -> Capacity = SIZE;
 
-	return S;	
+  return S; 
 }
 
 int IsEmpty(Stack S)
 {
-	return S -> Size == 0;
+  return S -> Size == 0;
 }
 
 int IsFull(Stack S)
 {
-	return S -> Size == S -> Capacity;
+  return S -> Size == S -> Capacity;
 }
 
 void Destroy(Stack S)
 {
-	free(S -> Next);
-	free(S);
+  free(S -> Next);
+  free(S);
 }
 
 void Push(Stack S, ElementType Value)
 {
-	if (IsFull(S))
-	{
-		S -> Next = realloc(S -> Next, sizeof(ElementType) * 2 * S -> Capacity);
-		S -> Capacity *= 2;
-	}
+  if (IsFull(S))
+  {
+    S -> Next = realloc(S -> Next, sizeof(ElementType) * 2 * S -> Capacity);
+    S -> Capacity *= 2;
+  }
 
-	S -> Next[S -> Size++] = Value;
+  S -> Next[S -> Size++] = Value;
 }
 
 ElementType Pop(Stack S)
 {
-	if (IsEmpty(S))
-	{
-		printf("Empty Stack\n");
-		exit(1);
-	}
+  if (IsEmpty(S))
+  {
+    printf("Empty Stack\n");
+    exit(1);
+  }
 
-	return S -> Next[--S -> Size];
+  return S -> Next[--S -> Size];
 }
 
 ElementType Top(Stack S)
 {
-	if (IsEmpty(S))
-	{
-		printf("Empty Stack\n");
-		exit(1);
-	}
+  if (IsEmpty(S))
+  {
+    printf("Empty Stack\n");
+    exit(1);
+  }
 
-	return S -> Next[S -> Size - 1];
+  return S -> Next[S -> Size - 1];
 }
 
 int Evaluate(int Op1, int Op2, char Op)
 {
-	if (Op == '+')
-		return Op1 + Op2;
-	else if (Op == '-')
-		return Op1 - Op2;
+  if (Op == '+')
+    return Op1 + Op2;
+  else if (Op == '-')
+    return Op1 - Op2;
 }
 
 void PushDigitToStack(Stack S, int Value)
 {
-	int X, Op1, Op2, Operator;
+  int X, Op1, Op2, Operator;
 
-	while (1)
-	{
-		if (IsEmpty(S))
-		{
-			Push(S, Value);
-			break;
-		}
-		else
-		{
-			X = Top(S);
+  while (1)
+  {
+    if (IsEmpty(S))
+    {
+      Push(S, Value);
+      break;
+    }
+    else
+    {
+      X = Top(S);
 
-			if (X == Plus || X == Minus)    		
-			{
-				Op2 = Value;
-				Operator = Pop(S) == Plus ? '+' : '-';
-				Op1 = Pop(S);
-				Value = Evaluate(Op1, Op2, Operator);
-			}
-			else
-			{
-				Push(S, Value);
-				break;
-			}
-		}
-	}
+      if (X == Plus || X == Minus)        
+      {
+        Op2 = Value;
+        Operator = Pop(S) == Plus ? '+' : '-';
+        Op1 = Pop(S);
+        Value = Evaluate(Op1, Op2, Operator);
+      }
+      else
+      {
+        Push(S, Value);
+        break;
+      }
+    }
+  }
 }
 
 int SubStringToInt(char* pBegin, char* pEnd)
 {
-	int i = 0;
+  int i = 0;
 
-	while(pBegin != pEnd)
-	{
-		i = i * 10 + *pBegin - '0';
-		++pBegin;
-	}
+  while(pBegin != pEnd)
+  {
+    i = i * 10 + *pBegin - '0';
+    ++pBegin;
+  }
 
-	return i;
+  return i;
 }
 
 int calculate(char* s) {
@@ -160,65 +160,65 @@ int calculate(char* s) {
 
     while(*Ptr != '\0')
     {
-    	if (IsDigit(*Ptr))
-    	{
-    		PtrEnd = Ptr + 1 + strspn(Ptr + 1, Numbers);
-    		Value = SubStringToInt(Ptr, PtrEnd);
-				PushDigitToStack(S, Value);
-				Ptr = PtrEnd;
-				continue;
-    	}
-    	else if (IsOp(*Ptr))
-    	{
-    		PtrTarget = strpbrk(Ptr + 1, Targets);
+      if (IsDigit(*Ptr))
+      {
+        PtrEnd = Ptr + 1 + strspn(Ptr + 1, Numbers);
+        Value = SubStringToInt(Ptr, PtrEnd);
+        PushDigitToStack(S, Value);
+        Ptr = PtrEnd;
+        continue;
+      }
+      else if (IsOp(*Ptr))
+      {
+        PtrTarget = strpbrk(Ptr + 1, Targets);
 
-    		if (IsDigit(*PtrTarget))
-    		{
-	    		Op1 = Pop(S);
-	    		Operator = *Ptr;
-	
-	    		PtrEnd = PtrTarget + 1 + strspn(PtrTarget + 1, Numbers);
-	    		Value = SubStringToInt(PtrTarget, PtrEnd);
-    			Ptr = PtrEnd;
-	    		Op2 = Value;
-	    		Push(S, Evaluate(Op1, Op2, Operator));
-	    		continue;
-    		}
-    		else
-    		{
-    			if (*Ptr == '+')
-    				Push(S, Plus);
-    			else if (*Ptr == '-')
-    				Push(S, Minus);
+        if (IsDigit(*PtrTarget))
+        {
+          Op1 = Pop(S);
+          Operator = *Ptr;
+  
+          PtrEnd = PtrTarget + 1 + strspn(PtrTarget + 1, Numbers);
+          Value = SubStringToInt(PtrTarget, PtrEnd);
+          Ptr = PtrEnd;
+          Op2 = Value;
+          Push(S, Evaluate(Op1, Op2, Operator));
+          continue;
+        }
+        else
+        {
+          if (*Ptr == '+')
+            Push(S, Plus);
+          else if (*Ptr == '-')
+            Push(S, Minus);
 
-    			Ptr = PtrTarget;
-    			Push(S, Parenthesis);
-    		}
-    	}
-    	else if (IsSpace(*Ptr))
-    	{
-    	}
-    	else if (IsLeftParen(*Ptr))
-    	{
-    		Push(S, Parenthesis);
-    	}
-    	else if (IsRightParen(*Ptr))
-    	{
-    		// Get digit from stack
-    		Value = Pop(S);
-    		// Pop left parenthesis
-    		Pop(S);
-    		// Push digit back to stack
-				PushDigitToStack(S, Value);
-    	}
+          Ptr = PtrTarget;
+          Push(S, Parenthesis);
+        }
+      }
+      else if (IsSpace(*Ptr))
+      {
+      }
+      else if (IsLeftParen(*Ptr))
+      {
+        Push(S, Parenthesis);
+      }
+      else if (IsRightParen(*Ptr))
+      {
+        // Get digit from stack
+        Value = Pop(S);
+        // Pop left parenthesis
+        Pop(S);
+        // Push digit back to stack
+        PushDigitToStack(S, Value);
+      }
 
-    	++Ptr;
+      ++Ptr;
     }
 
     if (S -> Size != 1)
     {
-    	fprintf(stderr, "Error Expression\n");
-    	exit(1);
+      fprintf(stderr, "Error Expression\n");
+      exit(1);
     }
 
     Value = Pop(S);
@@ -228,31 +228,31 @@ int calculate(char* s) {
 
 int main(int argc, char const *argv[])
 {
-	// "1 + 1" = 2
-	// " 2-1 + 2 " = 3
-	// "(1+(4+5+2)-3)+(6+8)" = 23
+  // "1 + 1" = 2
+  // " 2-1 + 2 " = 3
+  // "(1+(4+5+2)-3)+(6+8)" = 23
 
-	char *Expression1 = "1 + 1";
-	char *Expression2 = " 2-1 + 2 ";
-	char *Expression3 = "(1+(4+5+2)-3)+(6+8)";
-	char *Expression4 = "2147483647";
-	char *Expression5 = "1-11";
+  char *Expression1 = "1 + 1";
+  char *Expression2 = " 2-1 + 2 ";
+  char *Expression3 = "(1+(4+5+2)-3)+(6+8)";
+  char *Expression4 = "2147483647";
+  char *Expression5 = "1-11";
 
-	int Result;
+  int Result;
 
-	Result = calculate(Expression1);
-	printf("%d\n", Result);
+  Result = calculate(Expression1);
+  printf("%d\n", Result);
 
-	Result = calculate(Expression2);
-	printf("%d\n", Result);
+  Result = calculate(Expression2);
+  printf("%d\n", Result);
 
-	Result = calculate(Expression3);
-	printf("%d\n", Result);
+  Result = calculate(Expression3);
+  printf("%d\n", Result);
 
-	Result = calculate(Expression4);
-	printf("%d\n", Result);
+  Result = calculate(Expression4);
+  printf("%d\n", Result);
 
-	Result = calculate(Expression5);
-	printf("%d\n", Result);
-	return 0;
+  Result = calculate(Expression5);
+  printf("%d\n", Result);
+  return 0;
 }
