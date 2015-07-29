@@ -33,7 +33,7 @@ typedef struct RSTreeNode* RSTree;
 typedef struct RSTreeNode* RSPosition;
 
 #define ElementType RSPosition
-#define SIZE 8
+#define SIZE 2
 
 struct QueueRecord
 {
@@ -114,7 +114,7 @@ Queue Rearrange(Queue Q)
   free(Q -> Next);
   Q -> Next = Buffer;
   Q -> Capacity *= 2;
-  Q -> Front = i - 1;
+  Q -> Front = i;
   Q -> Rear = 0;
   return Q;
 }
@@ -245,11 +245,11 @@ Tree Insert(int value, Tree T)
   if (T == NULL)
     return NewNode(value);
 
-  // T -> left = Insert(value, T -> left);
-  if (T -> val > value)
-    T -> left = Insert(value, T -> left);
-  else if (T -> val < value)
-    T -> right = Insert(value, T -> right);
+  T -> left = Insert(value, T -> left);
+  // if (T -> val > value)
+  //   T -> left = Insert(value, T -> left);
+  // else if (T -> val < value)
+  //   T -> right = Insert(value, T -> right);
 
   return T;
 }
@@ -289,13 +289,13 @@ Tree CreateTree()
   Tree T;
   int Len, i;
   // int Array[] = {1, 2};
-  int Array[] = {8, 7, 4, 10, 9, 12};;
+  // int Array[] = {8, 7, 4, 10, 9, 12};;
 
   T = NULL;
-  Len = sizeof(Array) / sizeof(Array[0]);
-  // Len = 100;
+  // Len = sizeof(Array) / sizeof(Array[0]);
+  Len = 100;
   for (i = 0; i < Len; ++i)
-    T = Insert(Array[i], T);
+    T = Insert(i, T);
     // T = Insert(rand() % 1024, T);
 
   return T;
@@ -333,7 +333,7 @@ int main(int argc, char const *argv[])
 
 
   // Q = Initialize();
-  // for (i = 0; i < 80; ++i)
+  // for (i = 0; i < 30; ++i)
   //   Enqueue(Q, i);
 
   // while (!isEmpty(Q))
