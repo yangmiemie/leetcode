@@ -23,7 +23,7 @@ typedef struct TreeNode* Position;
 
 int Min(int a, int b)
 {
-	return a > b ? b : a;
+  return a > b ? b : a;
 }
 
 int minTreeDepth(struct TreeNode* root)
@@ -134,21 +134,21 @@ void MakeEmpty(Tree T)
 
 int main(int argc, char const *argv[])
 {
-	Tree T;
-	int Depth;
+  Tree T;
+  int Depth;
 
-	T = CreateTree();
+  T = CreateTree();
 
-	PreOrderTraverse(T);
-	printf("\n");
+  PreOrderTraverse(T);
+  printf("\n");
 
-	InOrderTraverse(T);
-	printf("\n");
+  InOrderTraverse(T);
+  printf("\n");
 
-	PostOrderTraverse(T);
-	printf("\n");
+  PostOrderTraverse(T);
+  printf("\n");
 
-	Depth = minDepth(T);
-	printf("%d\n", Depth);
-	return 0;
+  Depth = minDepth(T);
+  printf("%d\n", Depth);
+  return 0;
 }
