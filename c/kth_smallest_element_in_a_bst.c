@@ -200,23 +200,6 @@ void MakeEmpty(Tree T)
   return;
 }
 
-// int TestStack()
-// {
-//  Stack S;
-//  int i;
-
-//  S = Initialize();
-//  for (i = 0; i < 100; ++i)
-//    Push(S, i);
-
-//  while (!IsEmpty(S))
-//    printf("%d ", Pop(S));
-
-//  printf("\n");
-
-//  Destroy(S);
-// }
-
 int main(int argc, char const *argv[])
 {
   Tree T;
