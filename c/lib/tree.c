@@ -3,6 +3,9 @@
 
 #include "tree.h"
 
+#define Tree struct TreeNode*
+#define Position struct TreeNode*
+
 Tree NewNode(int value)
 {
   Tree T;
@@ -97,3 +100,6 @@ void MakeEmpty(Tree T)
 
   return;
 }
+
+#undef Tree
+#undef Position

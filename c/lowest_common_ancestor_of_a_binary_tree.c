@@ -6,10 +6,14 @@
  *     struct TreeNode *right;
  * };
  */
+
 #include <stdio.h>
 #include <stdlib.h>
 
 #include "lib/tree.h"
+
+typedef struct TreeNode* Tree;
+typedef struct TreeNode* Position;
 
 #define ElementType Position
 #define SIZE 2

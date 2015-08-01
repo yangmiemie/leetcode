@@ -5,8 +5,10 @@ struct TreeNode
 	struct TreeNode* right;
 };
 
-typedef struct TreeNode* Tree;
-typedef struct TreeNode* Position;
+#define Tree struct TreeNode*
+#define Position struct TreeNode*
+// typedef struct TreeNode* Tree;
+// typedef struct TreeNode* Position;
 
 Tree NewNode(int value);
 Tree CreateTree();
@@ -16,6 +18,9 @@ void InOrderTraverse(Tree T);
 void PostOrderTraverse(Tree T);
 Position Find(Tree T, int Value);
 void MakeEmpty(Tree T);
+
+#undef Tree
+#undef Position
 
 
 
