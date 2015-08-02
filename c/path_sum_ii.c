@@ -49,7 +49,7 @@ struct StackRecord
 
 typedef struct StackRecord* Stack;
 
-Stack Initialize()
+Stack Initialize() 
 {
 	Stack S;
 
@@ -143,37 +143,31 @@ void AddValuesToPSR(PSR P, int* Values, int Size)
 	++ P -> Size;
 }
 
-int PS(struct TreeNode* root, int sum, PSR P, Stack S) {
+void PS(struct TreeNode* root, int sum, PSR P, Stack S) {
 	if (root == NULL)
-		return 0;
+		return;
 
 	if (root -> left == NULL && root -> right == NULL)
 	{
-		if (sum == root -> val)
-		{
-			Push(S, root -> val);
-			AddValuesToPSR(P, S -> Next, S -> Size);
-			Pop(S);
-			return 1;
-		}
-		else
-		{
-			return 0;
-		}
-	}
+		if (sum != root -> val)
+			return;
 
-	int LeftFound, RightFound;
+		Push(S, root -> val);
+		AddValuesToPSR(P, S -> Next, S -> Size);
+		Pop(S);
+		return;
+	}
 
 	Push(S, root -> val);
 
 	if (root -> left)
-		LeftFound = PS(root -> left, sum - root -> val, P, S);
+		PS(root -> left, sum - root -> val, P, S);
 
 	if (root -> right)
-		RightFound = PS(root -> right, sum - root -> val, P, S);
+		PS(root -> right, sum - root -> val, P, S);
 
 	Pop(S);
-	return LeftFound || RightFound;	
+	return;	
 }
 
 int** pathSum(struct TreeNode* root, int sum, int** columnSizes, int* returnSize) {
@@ -186,14 +180,13 @@ int** pathSum(struct TreeNode* root, int sum, int** columnSizes, int* returnSize
 
 	PSR P;
 	Stack S;
-	int Found;
 
 	P = InitializePSR();
 	S = Initialize();
 
-	Found = PS(root, sum, P, S);
+	PS(root, sum, P, S);
 
-	if (Found)
+	if (P -> Size != 0)
 	{
 		*columnSizes = P -> ColumnSizes;
 		*returnSize = P -> Size;
