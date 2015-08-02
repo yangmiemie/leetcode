@@ -9,7 +9,7 @@
 Tree NewNode(int value)
 {
   Tree T;
-  T = malloc(sizeof(struct TreeNode));
+  T = (Tree)malloc(sizeof(struct TreeNode));
   T -> val = value;
   T -> left = T -> right = NULL;
   return T;
