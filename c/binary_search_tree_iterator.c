@@ -17,13 +17,9 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-#define SIZE 8
+#include "lib/tree.h"
 
-struct TreeNode {
-	int val;
-  struct TreeNode *left;
-  struct TreeNode *right;
-};
+#define SIZE 8
 
 typedef struct TreeNode* Tree;
 
@@ -60,14 +56,14 @@ int isEmpty(struct BSTIterator* i)
 	return i -> size == i -> front;
 }
 
-void InOrderTraverse(struct TreeNode *root, struct BSTIterator* i)
+void InOrderTraversal(struct TreeNode *root, struct BSTIterator* i)
 {
 	if (root == NULL)
 		return;
 
-	InOrderTraverse(root -> left, i);
+	InOrderTraversal(root -> left, i);
 	Push(root -> val, i);
-	InOrderTraverse(root -> right, i);
+	InOrderTraversal(root -> right, i);
 }
 
 struct BSTIterator *bstIteratorCreate(struct TreeNode *root) {
@@ -77,7 +73,7 @@ struct BSTIterator *bstIteratorCreate(struct TreeNode *root) {
 	i -> capacity = SIZE;
 	i -> front = 0;
 
-	InOrderTraverse(root, i);
+	InOrderTraversal(root, i);
 	return i;
 }
 
@@ -103,37 +99,6 @@ void bstIteratorFree(struct BSTIterator *iter) {
  * while (bstIteratorHasNext(i)) printf("%d\n", bstIteratorNext(i));
  * bstIteratorFree(i);
  */
-Tree NewNode(int value)
-{
-	Tree T;
-	T = malloc(sizeof(struct TreeNode));
-	T -> val = value;
-	T -> left = T -> right = NULL;
-	return T;
-}
-
-Tree Insert(int value, Tree T)
-{
-	if (T == NULL)
-		return NewNode(value);
-
-	if (T -> val > value)
-		T -> left = Insert(value, T -> left);
-	else if (T -> val < value)
-		T -> right = Insert(value, T -> right);
-
-	return T;
-}
-
-void PreOrderTraverse(Tree T)
-{
-	if (T == NULL)
-		return;
-
-	printf("%d ", T -> val);
-	PreOrderTraverse(T -> left);
-	PreOrderTraverse(T -> right);
-}
 
 int main(int argc, char const *argv[])
 {

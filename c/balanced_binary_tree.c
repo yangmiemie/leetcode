@@ -9,14 +9,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "lib/tree.h"
+
 typedef struct TreeNode* Tree;
 typedef struct TreeNode* Position;
-
-struct TreeNode {
-	int val;
-	struct TreeNode* left;
-	struct TreeNode* right;
-};
 
 int Max(int a, int b)
 {
@@ -76,59 +72,6 @@ int isTreeBalanced(Tree T, int* Height)
 int isBalanced(struct TreeNode* root) {
 	int Height;
 	return isTreeBalanced(root, &Height);
-}
-
-Tree NewNode(int value)
-{
-	Tree T;
-	T = malloc(sizeof(struct TreeNode));
-	T -> val = value;
-	T -> left = T -> right = NULL;
-	return T;
-}
-
-Tree Insert(int value, Tree T)
-{
-	if (T == NULL)
-		return NewNode(value);
-
-	if (T -> val > value)
-		T -> left = Insert(value, T -> left);
-	else if (T -> val < value)
-		T -> right = Insert(value, T -> right);
-
-	return T;
-}
-
-void PostOrderTraverse(Tree T)
-{
-	if (T == NULL)
-		return;
-
-	PostOrderTraverse(T -> left);
-	PostOrderTraverse(T -> right);
-	printf("%d ", T -> val);
-}
-
-
-void InOrderTraverse(Tree T)
-{
-	if (T == NULL)
-		return;
-
-	InOrderTraverse(T -> left);
-	printf("%d ", T -> val);
-	InOrderTraverse(T -> right);
-}
-
-void PreOrderTraverse(Tree T)
-{
-	if (T == NULL)
-		return;
-
-	printf("%d ", T -> val);
-	PreOrderTraverse(T -> left);
-	PreOrderTraverse(T -> right);
 }
 
 int main(int argc, char const *argv[])

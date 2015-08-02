@@ -32,6 +32,8 @@
 #include <stdlib.h>
 #include <assert.h>
 
+#include "lib/tree.h"
+ 
 #define SIZE 2
 
 typedef struct LevelReturnRecord* RetPtr;
@@ -41,12 +43,6 @@ typedef struct LevelOrderNode* LNode;
 typedef struct QueueRecord* Queue;
 
 #define ElementType LNode
-
-struct TreeNode {
-	int val;
- 	struct TreeNode *left;
- 	struct TreeNode *right;
-};
 
 struct LevelOrderNode 
 {
@@ -329,48 +325,6 @@ void testCase()
 	// while(!isEmpty(Q))
 	// 	assert(Dequeue(Q) == Array[i++]);		
 
-}
-
-Tree NewNode(int value)
-{
-	Tree T;
-	T = malloc(sizeof(struct TreeNode));
-	T -> val = value;
-	T -> left = T -> right = NULL;
-	return T;
-}
-
-Tree Insert(int value, Tree T)
-{
-	if (T == NULL)
-		return NewNode(value);
-
-	if (T -> val > value)
-		T -> left = Insert(value, T -> left);
-	else if (T -> val < value)
-		T -> right = Insert(value, T -> right);
-
-	return T;
-}
-
-void PreOrderTraverse(Tree T)
-{
-	if (T == NULL)
-		return;
-
-	printf("%d ", T -> val);
-	PreOrderTraverse(T -> left);
-	PreOrderTraverse(T -> right);
-}
-
-void PostOrderTraverse(Tree T)
-{
-	if (T == NULL)
-		return;
-
-	PostOrderTraverse(T -> left);
-	PostOrderTraverse(T -> right);
-	printf("%d ", T -> val);
 }
 
 int main(int argc, char const *argv[])

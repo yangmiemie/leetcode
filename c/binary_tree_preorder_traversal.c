@@ -14,11 +14,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-struct TreeNode {
-	int val;
-	struct TreeNode *left;
-	struct TreeNode *right;
-};
+#include "lib/tree.h"
 
 typedef struct TreeNode* Tree;
 typedef struct TreeNode* Position;
@@ -149,38 +145,6 @@ int* preorderTraversal(struct TreeNode* root, int* returnSize)
 
   *returnSize = R -> Size;
   return R -> Buffer;
-}
-
-Tree NewNode(int value)
-{
-	Tree T;
-	T = malloc(sizeof(struct TreeNode));
-	T -> val = value;
-	T -> left = T -> right = NULL;
-	return T;
-}
-
-Tree Insert(int value, Tree T)
-{
-	if (T == NULL)
-		return NewNode(value);
-
-	if (T -> val > value)
-		T -> left = Insert(value, T -> left);
-	else if (T -> val < value)
-		T -> right = Insert(value, T -> right);
-
-	return T;
-}
-
-void PreOrderTraverse(Tree T)
-{
-	if (T == NULL)
-		return;
-
-	printf("%d ", T -> val);
-	PreOrderTraverse(T -> left);
-	PreOrderTraverse(T -> right);
 }
 
 int main(int argc, char const *argv[])
