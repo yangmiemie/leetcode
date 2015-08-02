@@ -64,7 +64,7 @@ Tree CreateTree()
   Tree T;
   int Len, i;
   // int Array[] = {1, 2};
-  int Array[] = {8, 7, 4, 10, 9, 12};;
+  int Array[] = {5, 7, 4, 6, 9, 2};;
 
   T = NULL;
   Len = sizeof(Array) / sizeof(Array[0]);
@@ -73,6 +73,12 @@ Tree CreateTree()
     T = Insert(Array[i], T);
     // T = Insert(rand() % 1024, T);
 
+
+  // T = NewNode(1);
+  // T -> left = NewNode(2);
+  // T -> right = NewNode(2);
+  // T -> left -> right = NewNode(3);
+  // T -> right -> left = NewNode(3);
   return T;
 }
 

@@ -8,6 +8,7 @@ extern Stack Initialize();
 extern int Push(Stack, int);
 extern int Pop(Stack);
 extern void Destroy(Stack);
+extern int IsEmpty(Stack);
 
 int TestStack()
 {
