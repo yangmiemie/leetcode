@@ -2,6 +2,8 @@
 
 #include "test_stack.h"
 
+#define Stack struct StackRecord*
+
 extern Stack Initialize();
 extern int Push(Stack, int);
 extern int Pop(Stack);
@@ -23,3 +25,5 @@ int TestStack()
 
  Destroy(S);
 }
+
+#undef Stack
