@@ -66,19 +66,19 @@ Tree CreateTree()
   // int Array[] = {1, 2};
   int Array[] = {5, 7, 4, 6, 9, 2};;
 
-  T = NULL;
-  Len = sizeof(Array) / sizeof(Array[0]);
+  // T = NULL;
+  // Len = sizeof(Array) / sizeof(Array[0]);
   // Len = 0;
-  for (i = 0; i < Len; ++i)
-    T = Insert(Array[i], T);
+  // for (i = 0; i < Len; ++i)
+  //   T = Insert(Array[i], T);
     // T = Insert(rand() % 1024, T);
 
 
-  // T = NewNode(1);
-  // T -> left = NewNode(2);
-  // T -> right = NewNode(2);
-  // T -> left -> right = NewNode(3);
-  // T -> right -> left = NewNode(3);
+  T = NewNode(1);
+  T -> left = NewNode(5);
+  T -> right = NewNode(15);
+  T -> right -> right = NewNode(20);
+  T -> right -> left = NewNode(6);
   return T;
 }
 
