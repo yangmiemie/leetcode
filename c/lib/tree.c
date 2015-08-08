@@ -9,9 +9,11 @@
 Tree NewNode(int value)
 {
   Tree T;
+  struct TreeNode node;
   T = (Tree)malloc(sizeof(struct TreeNode));
   T -> val = value;
   T -> left = T -> right = NULL;
+  T -> next = &node;
   return T;
 }
 
@@ -75,10 +77,13 @@ Tree CreateTree()
 
 
   T = NewNode(1);
-  T -> left = NewNode(5);
-  T -> right = NewNode(15);
-  T -> right -> right = NewNode(20);
-  T -> right -> left = NewNode(6);
+  // T -> left = NewNode(5);
+  T -> right = NewNode(5);
+  T -> right -> right = NewNode(7);
+  T -> right -> right -> right = NewNode(17);
+  T -> right -> right -> right -> right = NewNode(27);
+  // T -> right -> right = NewNode(20);
+  // T -> right -> left = NewNode(6);
   return T;
 }
 
