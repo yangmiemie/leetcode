@@ -2,6 +2,8 @@
 
 #include "test_queue.h"
 
+#define Queue struct StackRecord*
+
 extern Queue Initialize();
 extern int Enqueue(Queue, int);
 extern int Dequeue(Queue);
@@ -23,3 +25,5 @@ int TestQueue()
 
  Destroy(Q);
 }
+
+#undef Queue
