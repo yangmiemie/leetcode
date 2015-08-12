@@ -3,8 +3,9 @@
 #include "test_stack.h"
 
 #define Stack struct StackRecord*
+#define MAX 2
 
-extern Stack Initialize();
+extern Stack Initialize(int);
 extern int Push(Stack, int);
 extern int Pop(Stack);
 extern void Destroy(Stack);
@@ -15,7 +16,7 @@ int TestStack()
  Stack S;
  int i;
 
- S = Initialize();
+ S = Initialize(MAX);
  for (i = 0; i < 100; ++i)
    Push(S, i);
 
