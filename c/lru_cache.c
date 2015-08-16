@@ -6,7 +6,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define SIZE 2
+#define SIZE 97
 typedef struct LruItem* LruNode;
 typedef struct LruRecord* LruList;
 
@@ -193,7 +193,7 @@ void RemoveToFirst(LruList List, LruNode NewNode)
 
 	if (NewNode -> Next != NULL)
 		NewNode -> Next -> Prev = NewNode -> Prev;
-	
+
 	NewNode -> Next = List -> Head -> Next;
 	NewNode -> Prev = List -> Head;
 
