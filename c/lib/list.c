@@ -44,6 +44,38 @@ List CreateList(int Size)
   return L;
 }
 
+List CreateRandList(int Size)
+{
+  List L, *P;
+  int i;
+
+  L = NewListNode(0);
+  P = L;
+  for (i = 1; i <= Size; ++i)
+  {
+    P -> next = NewListNode(rand() % (Size * 4));
+    P = P -> next;    
+  }
+
+  return L;
+}
+
+List CreateReversedList(int Size)
+{
+  List L, *P;
+  int i;
+
+  L = NewListNode(0);
+  P = L;
+  for (i = 1; i <= Size; ++i)
+  {
+    P -> next = NewListNode(Size + 1 - i);
+    P = P -> next;    
+  }
+
+  return L;
+}
+
 Position Find(List L, int Value)
 {
   while (L != NULL)

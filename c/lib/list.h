@@ -9,6 +9,8 @@ struct ListNode {
 Position NewListNode(int Value);
 void PrintList(List L);
 List CreateList(int Size);
+List CreateRandList(int Size);
+List CreateReversedList(int Size);
 Position Find(List L, int Value);
 void DestroyList(List L);
 
