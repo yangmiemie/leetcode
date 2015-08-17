@@ -18,12 +18,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "lib/list.h"
 #include "lib/tree.h"
-
-struct ListNode {
-  int val;
-  struct ListNode *next;
-};
 
 // struct TreeNode {
 //  int val;
@@ -106,43 +102,12 @@ struct TreeNode* sortedListToBST(struct ListNode* head) {
   return T;
 }
 
-Position NewListNode(int Value)
-{
-  Position P;
-
-  P = malloc(sizeof(struct ListNode));
-  P -> val = Value;
-  P -> next = NULL;
-
-  return P;
-}
-
-void PrintList(List L)
-{
-  while (L != NULL)
-  {
-    printf("%d ", L -> val);
-    L = L -> next;
-  }
-
-  printf("\n");
-}
-
 int main(int argc, char const *argv[])
 {
-  List L, P;
-  int i, Size;
+  List L;
   Tree T;
 
-  L = NewListNode(0);
-  Size = 15;
-  P = L;
-  for (i = 1; i <= Size; ++i)
-  {
-    P -> next = NewListNode(i);
-    P = P -> next;    
-  }
-
+  L = CreateList(15);
   PrintList(L);
 
   T = sortedListToBST(L);
