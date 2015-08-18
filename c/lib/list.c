@@ -44,6 +44,25 @@ List CreateList(int Size)
   return L;
 }
 
+List CreateDupList(int Size)
+{
+  List L, *P;
+  int i, j;
+
+  L = NewListNode(0);
+  P = L;
+  for (i = 1; i <= Size; ++i)
+  {
+    for (j = 0; j < i / 2; ++j)
+    {
+      P -> next = NewListNode(i);
+      P = P -> next; 
+    }   
+  }
+
+  return L;
+}
+
 List CreateRandList(int Size)
 {
   List L, *P;

@@ -13,6 +13,7 @@ List CreateRandList(int Size);
 List CreateReversedList(int Size);
 List CreateEvenList(int Size);
 List CreateOddList(int Size);
+List CreateDupList(int Size);
 Position Find(List L, int Value);
 void DestroyList(List L);
 
