@@ -11,6 +11,8 @@ void PrintList(List L);
 List CreateList(int Size);
 List CreateRandList(int Size);
 List CreateReversedList(int Size);
+List CreateEvenList(int Size);
+List CreateOddList(int Size);
 Position Find(List L, int Value);
 void DestroyList(List L);
 

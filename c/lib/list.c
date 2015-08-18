@@ -65,11 +65,44 @@ List CreateReversedList(int Size)
   List L, *P;
   int i;
 
+  L = NewListNode(Size);
+  P = L;
+  for (i = 1; i <= Size; ++i)
+  {
+    P -> next = NewListNode(Size - i);
+    P = P -> next;    
+  }
+
+  return L;
+}
+
+
+List CreateOddList(int Size)
+{
+  List L, *P;
+  int i;
+
+  L = NewListNode(1);
+  P = L;
+  for (i = 1; i <= Size; ++i)
+  {
+    P -> next = NewListNode(2 * i + 1);
+    P = P -> next;    
+  }
+
+  return L;
+}
+
+List CreateEvenList(int Size)
+{
+  List L, *P;
+  int i;
+
   L = NewListNode(0);
   P = L;
   for (i = 1; i <= Size; ++i)
   {
-    P -> next = NewListNode(Size + 1 - i);
+    P -> next = NewListNode(2 * i);
     P = P -> next;    
   }
 
