@@ -63,6 +63,22 @@ List CreateDupList(int Size)
   return L;
 }
 
+List CreateIdenticalList(int Size)
+{
+  List L, *P;
+  int i, j;
+
+  L = NewListNode(0);
+  P = L;
+  for (i = 1; i <= Size; ++i)
+  {
+    P -> next = NewListNode(0);
+    P = P -> next;  
+  }
+
+  return L;
+}
+
 List CreateRandList(int Size)
 {
   List L, *P;
