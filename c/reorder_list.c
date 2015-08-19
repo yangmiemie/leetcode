@@ -18,7 +18,6 @@
 #include <stdlib.h>
 
 #include "lib/list.h"
-#include "lib/test_stack.h"
 
 typedef struct ListNode* Position;
 typedef struct ListNode* List;
