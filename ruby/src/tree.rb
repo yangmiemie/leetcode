@@ -1,3 +1,11 @@
+class TreeNode
+    attr_accessor :val, :left, :right
+    def initialize(val)
+        @val = val
+        @left, @right = nil, nil
+    end
+end
+
 def insert(value, root)
 	return TreeNode.new(value) if root.nil?
 
