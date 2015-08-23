@@ -91,7 +91,7 @@ void Swap(Position P1, Position P2)
   P2 -> val = Temp;
 }
 
-struct ListNode* partition(struct ListNode* head, int x) {
+struct ListNode* partition2(struct ListNode* head, int x) {
   if (head == NULL)
     return NULL;
 
@@ -130,6 +130,41 @@ struct ListNode* partition(struct ListNode* head, int x) {
   return head;
 }
 
+struct ListNode* partition(struct ListNode* head, int x) {
+  if (head == NULL)
+    return NULL;
+
+  List FakeHead;
+  Position P1, P2, P3;
+
+  FakeHead = NewListNode(-1);
+  FakeHead -> next = head;
+
+  P1 = NULL;
+  for (P2 = FakeHead; P2 != NULL && P2 -> next != NULL; )
+  {
+    if (P1 == NULL && P2 -> next -> val >= x)
+    {
+      P1 = P2;
+    }
+    if (P1 != NULL && P2 -> next -> val < x)
+    {
+      P3 =  P2 -> next -> next;
+      P2 -> next -> next = P1 -> next;
+      P1 -> next = P2 -> next;
+      P2 -> next = P3;
+      P1 = P1 -> next;
+      continue;
+    }
+
+    P2 = P2 -> next;
+  }
+
+  P1 = FakeHead -> next;
+  free(FakeHead);
+  return P1;
+}
+
 int main(int argc, char const *argv[])
 {
   List L1, L2;
@@ -147,7 +182,7 @@ int main(int argc, char const *argv[])
   P -> next = L2;
   PrintList(L1);
 
-  L1 = partition(L1, 3);
+  L1 = partition(L1, 2);
   PrintList(L1);
   return 0;
 }
