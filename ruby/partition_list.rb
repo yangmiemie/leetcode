@@ -21,7 +21,7 @@
 
 require_relative 'src/list.rb'
 
-def partition(head, x)
+def partition2(head, x)
 	return head if head.nil? || head.next.nil?
 
 	stack = []
@@ -44,7 +44,36 @@ def partition(head, x)
 	head
 end
 
+def partition(head, x)
+	return head if head.nil? || head.next.nil?
+
+	fake_head = ListNode.new -1
+	fake_head.next = head
+
+	node1, node2, node3 = nil, nil, nil
+
+	node1 = fake_head
+	until node1.nil? || node1.next.nil?
+		if node2.nil? && node1.next.val >= x
+			node2 = node1
+		end
+
+		if !node2.nil? && node1.next.val < x
+			node3 = node1.next.next
+			node1.next.next = node2.next
+			node2.next = node1.next
+			node1.next = node3
+			node2 = node2.next
+			next
+		end
+
+		node1 = node1.next
+	end
+
+	fake_head.next
+end
+
 rand_list = create_rand_list 16
 print_list rand_list
-rand_list = partition rand_list, 0
+rand_list = partition rand_list, 16
 print_list rand_list
