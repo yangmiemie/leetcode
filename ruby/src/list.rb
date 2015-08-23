@@ -18,6 +18,13 @@ def create_identical_list(max, value)
 	head
 end
 
+def create_rand_list(max)
+	head = ListNode.new rand(max * 2)
+	(1..max - 1).inject(head) { |head, val| head.next = ListNode.new(rand(max * 2)); head = head.next }
+	head
+end
+
+
 def print_list(head)
 	until head.nil?
 		print head.val, ' '
