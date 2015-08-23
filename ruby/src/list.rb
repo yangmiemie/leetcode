@@ -8,7 +8,13 @@ end
 
 def create_list(max)
 	head = ListNode.new 0
-	(1..max).inject(head) { |head, val| head.next = ListNode.new(val); head = head.next }
+	(1..max - 1).inject(head) { |head, val| head.next = ListNode.new(val); head = head.next }
+	head
+end
+
+def create_identical_list(max, value)
+	head = ListNode.new value
+	(1..max - 1).inject(head) { |head, val| head.next = ListNode.new(value); head = head.next }
 	head
 end
 
