@@ -5,64 +5,169 @@
 // Note that 1 is typically treated as an ugly number.
 
 #include <stdio.h>
+#include <stdlib.h>
 
-int GetMinOfThreeNum(int a, int b, int c)
+#define ElementType int
+#define FIVE 5
+#define TWO 2
+#define THREE 3
+
+typedef struct ListNode* Position;
+typedef struct ListRecord* List;
+typedef struct Item* PtrItem;
+
+struct ListRecord
 {
-	if (a > b)
-	{
-		if (b < c)
-			return b;
-		else
-			return c;
-	}
-	else
-	{
-		if (a < c)
-			return a;
-		else
-			return c;
-	}
+  Position Head;
+  Position Last;
+};
+
+struct ListNode
+{
+  ElementType val;
+  Position next;
+};
+
+struct Item
+{
+  Position P;
+};
+
+List Initialize()
+{
+  List L;
+
+  L = malloc(sizeof(struct ListRecord));
+  L -> Head = L -> Last = NULL;
+
+  return L;
+}
+
+Position NewListNode(int Value)
+{
+  Position P;
+
+  P = malloc(sizeof(struct ListNode));
+  P -> next = NULL;
+  P -> val = Value;
+  return P;
+}
+
+void Insert(List L, int Value)
+{
+  if (L -> Head == NULL)
+  {
+    L -> Head = NewListNode(Value);
+    L -> Last = L -> Head;
+    return;
+  }
+
+  L -> Last -> next = NewListNode(Value);
+  L -> Last = L -> Last -> next;
+}
+
+void Destroy(List L)
+{
+  Position P1, P2;
+
+  for (P1 = L -> Head; P1 != NULL; )
+  {
+    P2 = P1 -> next;
+    free(P1);
+    P1 = P2;
+  }
+
+  free(L);
+}
+
+int GetMinOfThreeNum(PtrItem P1, PtrItem P2, PtrItem P3, PtrItem* TargetItem)
+{
+  int a, b, c;
+
+  a = P1 -> P -> val * TWO;
+  b = P2 -> P -> val * THREE;
+  c = P3 -> P -> val * FIVE;
+
+  if (a > b)
+  {
+    if (b < c)
+    {
+      *TargetItem = P2;
+      return b;
+    }
+    else
+    {
+      *TargetItem = P3;           
+      return c;
+    }
+  }
+  else
+  {
+    if (a < c)
+    {
+      *TargetItem = P1;                 
+      return a;
+    }
+    else
+    {
+      *TargetItem = P3;           
+      return c;
+    } 
+  }
+}
+
+PtrItem NewItem()
+{
+  PtrItem Ptr;
+
+  Ptr = malloc(sizeof(struct Item));
+  Ptr -> P = NULL;
+
+  return Ptr;
 }
 
 int nthUglyNumber(int n) {
-	if (n == 1)
-		return 1;
+  List L;
+  PtrItem TwoItem, ThreeItem, FiveItem, TargetItem;
+  Position P;
+  int i, NextUglyNumber;
 
-	if (n == 2)
-		return 2;
+  TwoItem = NewItem();
+  ThreeItem = NewItem();
+  FiveItem = NewItem();
 
-	if (n == 3)
-		return 3;
+  L = Initialize();
+  Insert(L, 1);
+  TwoItem -> P = ThreeItem -> P = FiveItem -> P = L -> Head;
 
-	int N1, N2, N3, N4;
-	int i;
+  i = 1;
+  while (i < n)
+  {
+    NextUglyNumber = GetMinOfThreeNum(TwoItem, ThreeItem, FiveItem, &TargetItem);
+    if (NextUglyNumber != L -> Last -> val)
+    {
+      Insert(L, NextUglyNumber);
+      ++i;
+    }
+  
+    TargetItem -> P = TargetItem -> P -> next;    
+  }
 
-	i = 3;
-	N1 = 1;
-	N2 = 2;
-	N3 = 3;
-
-	while (i != n)
-	{
-		N4 = GetMinOfThreeNum(5 * N1, 3 * N2, 2 * N3);
-		N1 = N2;
-		N2 = N3;
-		N3 = N4;
-		++i;
-	}
-
-	return N4;
+  NextUglyNumber = L -> Last -> val;;
+  Destroy(L);
+  return NextUglyNumber;
 }
 
 // 1, 2, 3, 4, 5, 6, 8, 9, 10, 12 
 int main(int argc, char const *argv[])
 {
-	int i, n;
+  int i, n;
 
-	n = 10;
+  // n = atoi(argv[1]);
+  n = 10;
+  for (i = 1; i <= n; ++i)
+    printf("%d ", nthUglyNumber(i));
 
-	for (i = 1; i <= n; ++i)
-		printf("%d ", nthUglyNumber(i));
-	printf("\n");
-	return 0;
+  printf("\n");
+  return 0;
 }
