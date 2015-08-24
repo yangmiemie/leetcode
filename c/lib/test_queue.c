@@ -2,9 +2,9 @@
 
 #include "test_queue.h"
 
-#define Queue struct StackRecord*
+#define Queue struct QueueRecord*
 
-extern Queue Initialize();
+extern Queue Initialize(int);
 extern int Enqueue(Queue, int);
 extern int Dequeue(Queue);
 extern void Destroy(Queue);
@@ -14,7 +14,7 @@ int TestQueue()
  Queue Q;
  int i;
 
- Q = Initialize();
+ Q = Initialize(4);
  for (i = 0; i < 100; ++i)
    Enqueue(Q, i);
 
