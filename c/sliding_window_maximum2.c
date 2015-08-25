@@ -23,18 +23,11 @@
 
 #include "lib/test_queue.h"
 
-#define ElementType Position
+#define ElementType int
 #define MAX 2
 
 typedef struct QueueRecord* Queue;
-typedef struct ItemNode* Position;
 typedef struct ResultRecord* Result;
-
-struct ItemNode
-{
-  int Value;
-  int Index;
-};
 
 struct QueueRecord
 {
@@ -94,6 +87,21 @@ ElementType Dequeue(Queue Q)
   return Q -> Next[Index];
 }
 
+ElementType PopBack(Queue Q)
+{
+  if (IsEmpty(Q))
+  {
+    fprintf(stderr, "Empty Queue\n");
+    exit(1);
+  }
+
+  int Index;
+
+  Index = Q -> Rear - 1;
+  Q -> Rear = Prev(Q, Q -> Rear);
+  return Q -> Next[Index];
+}
+
 void Destroy(Queue Q)
 {
   free(Q -> Next);
@@ -146,101 +154,6 @@ ElementType Rear(Queue Q)
   return Q -> Next[Prev(Q, Q -> Rear)];
 }
 
-// Window position                Max
-// ---------------               -----
-// [1  3  -1] -3  5  3  6  7       3
-//  1 [3  -1  -3] 5  3  6  7       3
-//  1  3 [-1  -3  5] 3  6  7       5
-//  1  3  -1 [-3  5  3] 6  7       5
-//  1  3  -1  -3 [5  3  6] 7       6
-//  1  3  -1  -3  5 [3  6  7]      7
-// Therefore, return the max sliding window as [3,3,5,5,6,7].
-
-Position NewItemNode(int Value, int Index)
-{
-  Position P;
-
-  P = malloc(sizeof(struct ItemNode));
-  P -> Index = Index;
-  P -> Value = Value;
-  return P;
-}
-
-void Swap(ElementType* Numbers, int i, int j)
-{
-  int Temp;
-  Position P;
-
-  Temp = Numbers[i] -> Index;
-  Numbers[i] -> Index = Numbers[j] -> Index;
-  Numbers[j] -> Index = Temp;
-
-  P = Numbers[i];
-  Numbers[i] = Numbers[j];
-  Numbers[j] = P;
-}
-
-ElementType* InitHeap(int* Numbers, int Size, Queue Q)
-{
-  ElementType* Heap;
-  ElementType Node;
-  int i;
-
-  Heap = malloc(sizeof(ElementType) * Size + 1);
-  for (i = 0; i < Size; ++i)
-  {
-    Node = NewItemNode(Numbers[i], i + 1);
-    Heap[i+1] = Node;
-    Enqueue(Q, Node);
-  }
-
-  return Heap;
-}
-
-void FixDown(ElementType* Numbers,int k, int Size)
-{
-  int j;
-
-  while (2 * k <= Size)
-  {
-    j = 2 * k;
-    if (j < Size && Numbers[j] -> Value < Numbers[j+1] -> Value)
-      j++;
-
-    if (Numbers[j] -> Value > Numbers[k] -> Value)
-    {
-      Swap(Numbers, j, k);
-      k = j;
-    }
-    else
-      break;
-  }
-}
-
-void FixUp(ElementType* Numbers, int k, int Size)
-{
-  while (k / 2 >= 1)
-  {
-    if (Numbers[k] -> Value > Numbers[k/2] -> Value)
-    {
-      Swap(Numbers, k, k / 2);
-      k = k / 2;
-    }   
-    else
-    {
-      break;
-    }
-  }
-}
-
-void BuildHeap(ElementType* Numbers, int Size)
-{
-  int i;
-
-  for (i = Size / 2; i >= 1; --i)
-    FixDown(Numbers, i, Size);
-}
-
 struct ResultRecord
 {
   int Size;
@@ -271,83 +184,56 @@ void AddToResult(Result R, int Value)
   R -> Next[R -> Size++] = Value;
 }
 
-void AdjustRandItemInHeap(ElementType* Heap, int k, int Size)
-{
-  if (k > 1 && Heap[k] -> Value > Heap[k/2] -> Value)
-    FixUp(Heap, k, Size);
-  else 
-    FixDown(Heap, k, Size);
-}
+// int Numbers[] = {9,10,9,-7,-4,-8,2,-6};
+int* maxSlidingWindow (int* nums, int numsSize, int k, int* returnSize) {
+  Queue Q;
+  Result R;
+  int i;
 
-int* maxSlidingWindow2(int* nums, int numsSize, int k, int* returnSize) {
   if (nums == NULL || numsSize == 0)
     return NULL;
-  
-  Result R;
-  ElementType* Heap;
-  ElementType Node;
-  Queue Q;
-  int i;
 
   Q = Initialize(MAX);
   R = InitializeResult(MAX);
-  Heap = InitHeap(nums, k, Q);
-  BuildHeap(Heap, k);
+
+  for (i = 0; i < k; ++i)
+  {
+    while (!IsEmpty(Q) && nums[Rear(Q)] < nums[i])
+      PopBack(Q);
+
+    Enqueue(Q, i);
+  }
 
   for (i = k; i < numsSize; ++i)
   {
-    AddToResult(R, Heap[1] -> Value);
-    Node = Dequeue(Q);
-    Node -> Value = nums[i];
-    Enqueue(Q, Node);
-    AdjustRandItemInHeap(Heap, Node -> Index, k);
+    AddToResult(R, nums[Front(Q)]);
+    if (Front(Q) <= i - k)
+      Dequeue(Q);
+
+    while (!IsEmpty(Q) && nums[Rear(Q)] <= nums[i])
+      PopBack(Q);
+
+    Enqueue(Q, i);
   }
 
-  AddToResult(R, Heap[1] -> Value);
+  AddToResult(R, nums[Front(Q)]);
+  Destroy(Q);
+
   *returnSize = R -> Size;
   return R -> Next;
 }
 
-int* maxSlidingWindow (int* nums, int numsSize, int k, int* returnSize) {
-
-}
-
-// void HeapSort(int* Numbers, int Size)
-// {
-//  int i;
-
-//  BuildHeap(Numbers, Size);
-//  for (i = 0; i < Size - 1; ++i)
-//  {
-//    Swap(Numbers, 1, Size - 1 - i);
-//    FixDown(Numbers, 1, Size - 2 - i);
-//  }
-// }
-
 int main(int argc, char const *argv[])
 {
   // TestQueue();
-  int Numbers[] = {1, 3, -1, -3, 5, 3, 6, 7};
+  // int Numbers[] = {2, 4, 7};
+  // int Numbers[] = {1, 3, -1, -3, 5, 3, 6, 7};
+  int Numbers[] = {9,10,9,-7,-4,-8,2,-6};
   int Len, i, k, ReturnSize;
   int *Result;
 
   Len = sizeof(Numbers) / sizeof(Numbers[0]);
-
-  // HeapSort(Numbers, Len);
-
-  // for (i = 0; i < Len; ++i)
-  //  printf("%d ", Numbers[i]);
-  // printf("\n");
-
-  // ElementType* Heap;
-
-  // Heap = InitHeap(Numbers, Len);
-  // BuildHeap(Heap, Len);
-
-  // for (i = 1; i < Len; ++i)
-  //  printf("%d ", Heap[i] -> Value);
-
-  k = Len;
+  k = 3;
   Result = maxSlidingWindow(Numbers, Len, k, &ReturnSize);
   printf("%d\n", ReturnSize);
   for (i = 0; i < ReturnSize; ++i)
